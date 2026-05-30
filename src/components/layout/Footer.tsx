@@ -58,11 +58,11 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-black pt-20 md:pt-32 pb-10 px-6 md:px-12 border-t border-white/[0.06]">
+    <footer className="bg-black pt-20 md:pt-32 pb-10 px-6 md:px-12 border-t border-white/6">
       <div className="max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 pb-16 border-b border-white/[0.06]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 pb-16 border-b border-white/6">
           <div className="lg:col-span-1">
-            <h3 className="font-clash text-[1.5rem] font-bold tracking-[0.05em] text-white mb-4">
+            <h3 className="font-clash text-[1.5rem] font-bold tracking-wider text-white mb-4">
               W.T.G.N
             </h3>
             <p className="text-[0.8rem] text-white/40 max-w-[240px] leading-[1.7] font-sans font-light">
@@ -185,7 +185,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light text-white/30">
+                  className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light ">
                   Johannesburg, ZA
                 </a>
               </li>
