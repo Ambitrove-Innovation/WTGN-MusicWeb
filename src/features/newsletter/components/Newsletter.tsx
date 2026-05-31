@@ -1,21 +1,39 @@
 import { motion } from 'motion/react';
 import React, { useState } from 'react';
+import subscribeNewsletter from '../../../backend/functions/subscribeNewsletter';
 
 export function Newsletter() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.includes('@')) {
+
+    try {
+
+      if (!email.includes('@')) {
+        setErrorMsg(true);
+        setTimeout(() => setErrorMsg(false), 2000);
+        return;
+      }
+
       setIsSubscribed(true);
       setErrorMsg(false);
-      setTimeout(() => setIsSubscribed(false), 3000);
+      console.log("Subscribing");
+
+      await subscribeNewsletter(email);
+      
+      console.log("Subscribed")
+      setTimeout(() => setIsSubscribed(false), 500);
       setEmail('');
-    } else {
+
+    } catch (err) {
+
       setErrorMsg(true);
       setTimeout(() => setErrorMsg(false), 2000);
+      console.log(err)
+
     }
   };
 
