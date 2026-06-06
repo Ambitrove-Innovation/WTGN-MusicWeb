@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { List, ListItem } from "@/components/ui/list";
 
 const InstagramIcon = () => (
   <svg
@@ -88,108 +89,108 @@ export function Footer() {
             <h5 className="font-space text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-white/25">
               Navigate
             </h5>
-            <ul className="space-y-3">
-              <li>
+            <List className="space-y-3">
+              <ListItem>
                 <a
                   href="#home"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Home
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#about"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Our Story
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#music"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Music
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#events"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Events
                 </a>
-              </li>
-            </ul>
+              </ListItem>
+            </List>
           </div>
 
           <div className="space-y-6">
             <h5 className="font-space text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-white/25">
               Music
             </h5>
-            <ul className="space-y-3">
-              <li>
+            <List className="space-y-3">
+              <ListItem>
                 <a
                   href="#"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Full Catalog
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Buy Tracks
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Latest Drop
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Press Kit
                 </a>
-              </li>
-            </ul>
+              </ListItem>
+            </List>
           </div>
 
           <div className="space-y-6">
             <h5 className="font-space text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-white/25">
               Contact
             </h5>
-            <ul className="space-y-3">
-              <li>
+            <List className="space-y-3">
+              <ListItem>
                 <a
                   href="mailto:contact@wtgn.co.za"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   contact@wtgn.co.za
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Bookings
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light">
                   Features & Collabs
                 </a>
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <a
                   href="#"
                   className="text-[0.82rem] text-white/45 hover:text-white transition-colors font-sans font-light ">
                   Johannesburg, ZA
                 </a>
-              </li>
-            </ul>
+              </ListItem>
+            </List>
           </div>
         </div>
 

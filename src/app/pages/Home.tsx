@@ -1,11 +1,12 @@
-import { Hero } from '@/src/features/hero/components/Hero';
-import { About } from '@/src/features/about/components/About';
-import { Biographies } from '@/src/features/biographies/components/Biographies';
-import { Music } from '@/src/features/music/components/Music';
-import { Manifesto } from '@/src/features/manifesto/components/Manifesto';
-import { Events } from '@/src/features/events/components/Events';
-import { Newsletter } from '@/src/features/newsletter/components/Newsletter';
-import { Marquee } from '@/src/features/marquee/components/Marquee';
+import { Hero } from "@/features/hero/components/Hero";
+import { About } from "@/features/about/components/About";
+import { Biographies } from "@/features/biographies/components/Biographies";
+import { Music } from "@/features/music/components/Music";
+import { Manifesto } from "@/features/manifesto/components/Manifesto";
+import { Events } from "@/features/events/components/Events";
+import { Booking } from "@/features/booking/components/Booking";
+import { Newsletter } from "@/features/newsletter/components/Newsletter";
+import { Marquee } from "@/features/marquee/components/Marquee";
 
 export function Home() {
   return (
@@ -17,6 +18,7 @@ export function Home() {
       <Music />
       <Manifesto />
       <Events />
+      <Booking />
       <Newsletter />
     </>
   );

@@ -1,5 +1,6 @@
-import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect } from "react";
+import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { toastManager } from "@/components/ui/toast";
 
 const PREVIEW_LIMIT = 15;
 
@@ -14,14 +15,13 @@ function formatTime(seconds: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-import { tracks } from "@/src/constants/data";
+import { tracks } from "@/constants/data";
 
 export function Music() {
   const [playingState, setPlayingState] = useState<string | null>(null);
-  const [toastMessage, setToastMessage] = useState("");
   const [progress, setProgress] = useState(0);
   const [unlockedTracks, setUnlockedTracks] = useState<string[]>([]);
-  const [hasNotified, setHasNotified] = useState(false);
+  const previewEndedToastSent = useRef(false);
 
   useEffect(() => {
     const handlePurchase = (e: Event) => {
@@ -31,8 +31,16 @@ export function Music() {
       if (playingState === itemId) {
         setPlayingState(null);
       }
-      setToastMessage("Item Unlocked & Downloading!");
-      setTimeout(() => setToastMessage(""), 3000);
+      toastManager.add({
+        title: "Item unlocked",
+        description: "Downloading the track you unlocked now.",
+        type: "success",
+        data: {
+          rootProps: {
+            className: "bg-black text-gray-300 border border-white/10",
+          },
+        },
+      });
     };
 
     window.addEventListener("purchase-complete", handlePurchase);
@@ -41,6 +49,7 @@ export function Music() {
   }, [playingState]);
 
   useEffect(() => {
+    previewEndedToastSent.current = false;
     let interval: NodeJS.Timeout;
     if (playingState) {
       interval = setInterval(() => {
@@ -60,11 +69,19 @@ export function Music() {
           if (prev >= limit - 1) {
             clearInterval(interval);
             setPlayingState(null);
-            if (!isUnlocked) {
-              setToastMessage(
-                "Preview ended. Unlock the full track to continue listening & download.",
-              );
-              setTimeout(() => setToastMessage(""), 5000);
+            if (!isUnlocked && !previewEndedToastSent.current) {
+              previewEndedToastSent.current = true;
+              toastManager.add({
+                title: "Preview ended",
+                description:
+                  "Unlock the full track to continue listening and download.",
+                type: "info",
+                data: {
+                  rootProps: {
+                    className: "bg-black text-gray-300 border border-white/10",
+                  },
+                },
+              });
             }
             return limit;
           }
@@ -89,8 +106,16 @@ export function Music() {
   const handleShare = (trackId: number) => {
     const trackUrl = `${window.location.origin}/?track=${trackId}`;
     navigator.clipboard.writeText(trackUrl).then(() => {
-      setToastMessage("Link Copied to Clipboard");
-      setTimeout(() => setToastMessage(""), 3000);
+      toastManager.add({
+        title: "Link copied",
+        description: "Share the track URL with your crew.",
+        type: "success",
+        data: {
+          rootProps: {
+            className: "bg-black text-gray-300 border border-white/10",
+          },
+        },
+      });
     });
   };
 
@@ -248,8 +273,18 @@ export function Music() {
                   <button
                     onClick={() => {
                       if (isFeaturedUnlocked) {
-                        setToastMessage("Downloading Album...");
-                        setTimeout(() => setToastMessage(""), 3000);
+                        toastManager.add({
+                          title: "Downloading album",
+                          description:
+                            "Your featured release is downloading now.",
+                          type: "success",
+                          data: {
+                            rootProps: {
+                              className:
+                                "bg-black text-gray-300 border border-white/10",
+                            },
+                          },
+                        });
                       } else {
                         window.dispatchEvent(
                           new CustomEvent("open-checkout", {
@@ -399,8 +434,17 @@ export function Music() {
                   <button
                     onClick={() => {
                       if (isUnlocked) {
-                        setToastMessage("Downloading Track...");
-                        setTimeout(() => setToastMessage(""), 3000);
+                        toastManager.add({
+                          title: "Downloading track",
+                          description: "Your track is downloading now.",
+                          type: "success",
+                          data: {
+                            rootProps: {
+                              className:
+                                "bg-black text-gray-300 border border-white/10",
+                            },
+                          },
+                        });
                       } else {
                         window.dispatchEvent(
                           new CustomEvent("open-checkout", {
@@ -424,18 +468,6 @@ export function Music() {
           );
         })}
       </div>
-
-      <AnimatePresence>
-        {toastMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, x: "-50%" }}
-            className="fixed bottom-10 left-1/2 z-[100] bg-white text-black px-6 py-3 font-space text-[0.65rem] font-bold uppercase tracking-[0.15em] shadow-lg">
-            {toastMessage}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
