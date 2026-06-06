@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 
-import { events } from "@/src/constants/data";
+import { events } from "@/constants/data";
 
 export function Events() {
   const [selectedLocation, setSelectedLocation] = useState(events[0].location);

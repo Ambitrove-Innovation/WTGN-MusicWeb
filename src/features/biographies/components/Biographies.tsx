@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 
-import { artistData } from "@/src/constants/data";
+import { artistData } from "@/constants/data";
 
 export function Biographies() {
   return (
