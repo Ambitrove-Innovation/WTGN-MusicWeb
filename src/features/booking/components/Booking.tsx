@@ -22,7 +22,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Progress, ProgressIndicator } from "@/components/ui/progress";
+import { Progress, ProgressIndicator, ProgressTrack } from "@/components/ui/progress";
 import {
   Select,
   SelectItem,
@@ -292,9 +292,11 @@ export function Booking() {
               </Button>
 
               {loading ? (
-                <Progress className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                <Progress value={null} className="mt-4">
                   <span className="sr-only">Submitting booking request</span>
-                  <ProgressIndicator className="bg-green-300" />
+                  <ProgressTrack className="h-2 overflow-hidden rounded-full bg-white/10">
+                    <ProgressIndicator className="bg-green-300 h-full" />
+                  </ProgressTrack>
                 </Progress>
               ) : null}
             </form>

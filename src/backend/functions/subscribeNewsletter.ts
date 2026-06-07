@@ -1,4 +1,4 @@
-import { setDoc, doc, arrayUnion } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase/config";
 
 // Email validation regex - RFC 5322 simplified
@@ -38,14 +38,16 @@ export default async function subscribeNewsletter(email: string) {
 
     console.log("Preparing subscription...");
 
-    const ref = doc(db, "subscribers", "emails");
+    const ref = collection(db, "subscribers");
 
     // Use the trimmed email for consistency
     const normalizedEmail = email.trim().toLowerCase();
 
-    await setDoc(ref, {
-      batch: arrayUnion(normalizedEmail)
-    }, { merge: true });
+    await addDoc(ref, {
+      email: normalizedEmail,
+      addedOn: serverTimestamp(),
+      status: "active"
+    });
 
     console.log("Successfully subscribed:", normalizedEmail);
     return { success: true };
