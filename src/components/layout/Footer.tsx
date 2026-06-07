@@ -196,7 +196,7 @@ export function Footer() {
 
         <a
           href="#home"
-          className="block py-12 md:py-12 text-center font-clash text-[clamp(3rem,8vw,7rem)] font-bold tracking-[-0.04em] text-white/60 hover:text-white/8 transition-colors overflow-hidden leading-none ">
+          className="block py-12 md:py-12 text-center font-clash text-[clamp(3rem,8vw,7rem)] font-bold tracking-[-0.04em] text-white/60 hover:text-white transition-colors overflow-hidden leading-none ">
           W.T.G.N
         </a>
 
