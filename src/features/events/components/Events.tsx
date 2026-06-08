@@ -2,10 +2,44 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 
 import { events } from "@/constants/data";
+import getLiveEvents from "@/backend/functions/getLiveEvents";
+import { Event as EventType } from "@/types/index";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/backend/firebase/config";
+import { unsubscribe } from "diagnostics_channel";
 
 export function Events() {
   const [selectedLocation, setSelectedLocation] = useState(events[0].location);
   const [rsvpEvent, setRsvpEvent] = useState<(typeof events)[0] | null>(null);
+  const [liveEvents, setLiveEvents] = useState<Array<EventType> | Array<Event> | null>();
+
+  
+
+  useEffect(() => {
+
+    const ref = collection(db, "events");
+    
+    const unsubscribe = onSnapshot(ref, async () => {
+
+      try {
+
+        const response = await getLiveEvents();
+        setLiveEvents(response);
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    });
+
+
+    
+
+    return () => unsubscribe();
+
+  },[]);
 
   useEffect(() => {
     if (rsvpEvent) {
@@ -37,66 +71,80 @@ export function Events() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 mt-16">
         <div>
-          {events.map((event, i) => (
-            <motion.div
-              key={event.id}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              onClick={() => setSelectedLocation(event.location)}
-              className={`group relative grid grid-cols-[70px_1fr] md:grid-cols-[80px_1fr_auto_auto] items-center gap-6 md:gap-8 py-8 border-b border-white/[0.06] transition-colors cursor-pointer ${selectedLocation === event.location ? "bg-white/[0.03]" : "hover:bg-white/[0.01]"}`}>
-              <div className="relative z-10 pl-4 md:pl-0">
-                <div className="font-clash text-[2rem] font-bold tracking-[-0.04em] leading-none text-white">
-                  {event.date.day}
-                </div>
-                <div className="font-sans text-[0.62rem] tracking-[0.15em] uppercase text-white/25 mt-1">
-                  {event.date.month}
-                </div>
-              </div>
+          {liveEvents?.length !== 0 ? (
+            <div>
+              {liveEvents?.map((event: any, i) => (
+                <>
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  onClick={() => setSelectedLocation(event.location)}
+                  className={`group relative grid grid-cols-[70px_1fr] md:grid-cols-[80px_1fr_auto_auto] items-center gap-6 md:gap-8 py-8 border-b border-white/[0.06] transition-colors cursor-pointer ${selectedLocation === event.location ? "bg-white/[0.03]" : "hover:bg-white/[0.01]"}`}>
+                  <div className="relative z-10 pl-4 md:pl-0">
+                    <div className="font-clash text-[2rem] font-bold tracking-[-0.04em] leading-none text-white">
+                      {event.date.day}
+                    </div>
+                    <div className="font-sans text-[0.62rem] tracking-[0.15em] uppercase text-white/25 mt-1">
+                      {event.date.month}
+                    </div>
+                  </div>
+    
+                  <div className="relative z-10">
+                    <h4 className="text-[1.1rem] text-white mb-1">{event.title}</h4>
+                    <p className="font-sans text-[0.8rem] text-white/35 font-light">
+                      {event.desc}
+                    </p>
+                  </div>
+    
+                  <div className="hidden md:block relative z-10 font-sans text-[0.7rem] tracking-[0.05em] text-white/30 truncate max-w-[150px]">
+                    {event.location.split(",")[0]}
+                  </div>
+    
+                  <div className="relative z-10 col-start-2 md:col-start-auto pb-4 md:pb-0 flex items-center gap-3">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedLocation(event.location);
+                        setRsvpEvent(event);
+                      }}
+                      className="bg-transparent text-white border border-white/20 px-4 py-[0.6rem] font-space text-[0.65rem] font-medium tracking-[0.1em] uppercase hover:bg-white hover:text-black hover:border-white transition-all whitespace-nowrap">
+                      RSVP
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedLocation(event.location);
+                        window.dispatchEvent(
+                          new CustomEvent("open-checkout", {
+                            detail: {
+                              id: `event-${event.id}`,
+                              title: event.title,
+                              price: 150,
+                              type: "ticket",
+                            },
+                          }),
+                        );
+                      }}
+                      className="bg-white text-black border border-white px-4 py-[0.6rem] font-space text-[0.65rem] font-medium tracking-[0.1em] uppercase hover:bg-transparent hover:text-white transition-all whitespace-nowrap">
+                      Tickets
+                    </button>
+                  </div>
+                </motion.div>
+                </>
 
-              <div className="relative z-10">
-                <h4 className="text-[1.1rem] text-white mb-1">{event.title}</h4>
-                <p className="font-sans text-[0.8rem] text-white/35 font-light">
-                  {event.desc}
-                </p>
-              </div>
-
-              <div className="hidden md:block relative z-10 font-sans text-[0.7rem] tracking-[0.05em] text-white/30 truncate max-w-[150px]">
-                {event.location.split(",")[0]}
-              </div>
-
-              <div className="relative z-10 col-start-2 md:col-start-auto pb-4 md:pb-0 flex items-center gap-3">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedLocation(event.location);
-                    setRsvpEvent(event);
-                  }}
-                  className="bg-transparent text-white border border-white/20 px-4 py-[0.6rem] font-space text-[0.65rem] font-medium tracking-[0.1em] uppercase hover:bg-white hover:text-black hover:border-white transition-all whitespace-nowrap">
-                  RSVP
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedLocation(event.location);
-                    window.dispatchEvent(
-                      new CustomEvent("open-checkout", {
-                        detail: {
-                          id: `event-${event.id}`,
-                          title: event.title,
-                          price: 150,
-                          type: "ticket",
-                        },
-                      }),
-                    );
-                  }}
-                  className="bg-white text-black border border-white px-4 py-[0.6rem] font-space text-[0.65rem] font-medium tracking-[0.1em] uppercase hover:bg-transparent hover:text-white transition-all whitespace-nowrap">
-                  Tickets
-                </button>
-              </div>
-            </motion.div>
-          ))}
+              )
+            )}
+          </div>
+          )
+          :
+          (
+            <div>
+              No events
+            </div>
+          )}
         </div>
 
         {/* Map Frame Area */}
