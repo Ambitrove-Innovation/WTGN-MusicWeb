@@ -17,7 +17,7 @@ export function Events() {
 
   useEffect(() => {
 
-    const ref = collection(db, "events");
+    const ref = collection(db, "liveEvents");
     
     const unsubscribe = onSnapshot(ref, async () => {
 
