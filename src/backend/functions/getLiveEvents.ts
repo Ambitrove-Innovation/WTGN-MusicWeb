@@ -5,7 +5,7 @@ import { db } from "../firebase/config";
 export default async function getLiveEvents(): Promise<Array<Event>> {
   try {
 
-    const ref = collection(db, "events");
+    const ref = collection(db, "liveEvents");
     const snapshot = await getDocs(ref);
 
     const eventsData = snapshot.docs.map(doc => {
