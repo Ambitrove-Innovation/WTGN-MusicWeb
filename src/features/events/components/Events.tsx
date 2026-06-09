@@ -6,7 +6,6 @@ import getLiveEvents from "@/backend/functions/getLiveEvents";
 import { Event as EventType } from "@/types/index";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/backend/firebase/config";
-import { unsubscribe } from "diagnostics_channel";
 
 export function Events() {
   const [selectedLocation, setSelectedLocation] = useState(events[0].location);
