@@ -81,7 +81,7 @@ export function About() {
         </div>
 
         <div className="absolute -bottom-8 -left-12 glass-card px-8 py-6">
-          <div className="font-clash text-[2.8rem] font-bold tracking-[-0.04em] leading-none text-white">2020</div>
+          <div className="font-clash text-[2.8rem] font-bold tracking-[-0.04em] leading-none text-white">2024</div>
           <span className="block font-sans text-[0.65rem] tracking-[0.15em] uppercase text-white/35 mt-1">Year Formed — SAE Institute</span>
         </div>
       </motion.div>

@@ -31,6 +31,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import submitForm from "@/backend/functions/contactPage";
+import getHtmlBody from "@/backend/template/contactFormTemplate";
 
 const initialFormState = {
   name: "",
@@ -64,18 +66,18 @@ export function Booking() {
     field: keyof typeof initialFormState,
     value: string,
   ) => {
-    setFormData((current) => ({ ...current, [field]: value }));
+    setFormData((current: any) => ({ ...current, [field]: value }));
   };
 
   const handleDateSelect = (date: Date | undefined) => {
     setSelectedDate(date);
-    setFormData((current) => ({
+    setFormData((current: any) => ({
       ...current,
       eventDate: date ? date.toISOString().slice(0, 10) : "",
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.venue) {
       toastManager.add({
@@ -85,6 +87,25 @@ export function Booking() {
       });
       return;
     }
+
+    const clientEmail = (import.meta as ImportMeta & {
+      env: { VITE_CLIENT_EMAIL: string };
+    }).env.VITE_CLIENT_EMAIL;
+
+    const clientName = (import.meta as ImportMeta & {
+      env: { VITE_CLIENT_NAME: string };
+    }).env.VITE_CLIENT_NAME;
+
+    const htmlContent = getHtmlBody(
+      formData.email,
+      formData.name,
+      formData.eventType,
+      formData.eventDate,
+      formData.venue,
+      formData.message
+    );
+
+    await submitForm(clientEmail, clientName, formData.subject, htmlContent);
 
     setLoading(true);
     window.setTimeout(() => {

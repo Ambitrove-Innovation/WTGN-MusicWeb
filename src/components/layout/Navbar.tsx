@@ -27,7 +27,7 @@ export function Navbar() {
           W.T.G.N
         </span>
         <span className="opacity-40 text-[0.65rem] tracking-[0.2em] font-sans font-light hidden sm:inline">
-          EST. 2020
+          EST. 2024
         </span>
       </div>
 
