@@ -19,6 +19,8 @@ export default async function submitForm (
             plain: html.replace(/<[^>]+>/g, ' ')
         };
 
+        console.log(apiPayload);
+
         const response = await fetch(mailAPI, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
