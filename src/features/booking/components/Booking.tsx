@@ -41,6 +41,7 @@ const initialFormState = {
   eventDate: "",
   venue: "",
   message: "",
+  subject: "Ambitrove's new Mailing System for Clients"
 };
 
 export function Booking() {
